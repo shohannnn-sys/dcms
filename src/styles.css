@@ -1,5 +1,5 @@
 @font-face{font-family:"Noto Sans";src:local("Noto Sans"),local("Segoe UI");font-display:swap}
-:root{font-family:"Noto Sans","Segoe UI",sans-serif;color:#0B1F33;background:#F6F8FB;font-synthesis:none;text-rendering:optimizeLegibility}
+:root{font-family:"Noto Sans","Noto Sans Bengali","Segoe UI",sans-serif;color:#0B1F33;background:#F6F8FB;font-synthesis:none;text-rendering:optimizeLegibility}
 *{box-sizing:border-box}
 html,body,#root{margin:0;min-width:1180px;min-height:100%;height:100%}
 body{overflow:hidden}
