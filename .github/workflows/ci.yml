@@ -14,13 +14,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24.21.0
-          cache: npm
       - name: Install dependencies
         run: npm install
       - name: Typecheck
         run: npm run typecheck
       - name: Unit tests
         run: npm test
+      - name: ESLint
+        run: npm run lint
       - name: License policy
         run: npm run license:check
       - name: Security source scan
