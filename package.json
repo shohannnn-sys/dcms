@@ -1,0 +1,80 @@
+{
+  "name": "dcms-pro",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Offline Dental Clinic Management System for Windows.",
+  "main": "dist-electron/main.js",
+  "type": "module",
+  "engines": { "node": ">=24.21.0 <25" },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "npm run typecheck && npm run build:electron && npm run build:renderer",
+    "build:electron": "tsc -p electron/tsconfig.json",
+    "build:renderer": "vite build",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p electron/tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "playwright test",
+    "lint": "eslint . --max-warnings 0",
+    "license:check": "node scripts/license-check.mjs",
+    "security:check": "node scripts/security-check.mjs",
+    "rebuild:native": "electron-rebuild -f -w better-sqlite3",
+    "package:win": "npm run build && npm run rebuild:native && electron-builder --win nsis --x64",
+    "clean": "node scripts/clean.mjs"
+  },
+  "dependencies": {
+    "better-sqlite3": "13.0.3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-hook-form": "7.89.0",
+    "react-router-dom": "7.18.4",
+    "zod": "4.6.5",
+    "zustand": "5.0.15"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "4.2.0",
+    "@playwright/test": "1.63.0",
+    "@types/node": "26.6.4",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "5.0.4",
+    "electron": "44.5.1",
+    "electron-builder": "26.17.0",
+    "eslint": "9.38.0",
+    "typescript": "7.0.2",
+    "vite": "8.3.2",
+    "vitest": "5.0.3"
+  },
+  "build": {
+    "appId": "com.dcmspro.desktop",
+    "productName": "DCMS Pro",
+    "artifactName": "DCMS-Pro-Setup-${version}-${arch}.${ext}",
+    "asar": true,
+    "compression": "maximum",
+    "npmRebuild": false,
+    "files": [
+      "dist/**",
+      "dist-electron/**",
+      "database/migrations/**",
+      "assets/fonts/**",
+      "assets/icons/**",
+      "package.json",
+      "!tests/**",
+      "!docs/**",
+      "!scripts/**"
+    ],
+    "win": {
+      "target": [{ "target": "nsis", "arch": ["x64"] }],
+      "artifactName": "DCMS-Pro-Setup-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "DCMS Pro",
+      "deleteAppDataOnUninstall": false
+    }
+  }
+}
