@@ -1,4 +1,4 @@
-import { app, BrowserWindow, session, shell } from "electron";
+import { app, BrowserWindow, ipcMain, session } from "electron";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { initializeDatabase } from "../database/database.js";
@@ -39,10 +39,7 @@ const createWindow = (): void => {
   });
 
   mainWindow.once("ready-to-show", () => mainWindow?.show());
-  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    void shell.openExternal(url);
-    return { action: "deny" };
-  });
+  mainWindow.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
 
   if (isDevelopment) {
     void mainWindow.loadURL(devServerUrl);
@@ -70,7 +67,9 @@ if (!singleInstance) {
   app.whenReady().then(() => {
     app.setAppUserModelId("com.dcmspro.desktop");
     configureSecurity();
-    databaseStatus = initializeDatabase(app.getPath("userData"));
+    databaseStatus = initializeDatabase(app.getPath("userData"), path.join(app.getAppPath(), "database", "migrations"));
+    ipcMain.handle("app:get-info", () => getAppInfo());
+    ipcMain.handle("db:get-status", () => getDatabaseStatus());
     createWindow();
   });
 
